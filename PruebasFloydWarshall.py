@@ -1,32 +1,33 @@
-# https://rosettacode.org/wiki/Floyd-Warshall_algorithm#Python
+# http://micaminomaster.com.co/grafo-algoritmo/dijkstra-floyd-warshall-python/
 '''
 Created on 16/11/2018
 
 @author: GVT
 '''
-from math import isinf
-from itertools import product
-
-def floydWarshall(n, edge):
-    rn = range(n)
-    dist = [[isinf] * n for i in rn]
-    nxt  = [[0]   * n for i in rn]
-    for i in rn:
-        dist[i][i] = 0
-    for u, v, w in edge:
-        dist[u-1][v-1] = w
-        nxt[u-1][v-1] = v-1
-    for k, i, j in product(rn, repeat=3):
-        sum_ik_kj = dist[i][k] + dist[k][j]
-        if dist[i][j] > sum_ik_kj:
-            dist[i][j] = sum_ik_kj
-            nxt[i][j]  = nxt[i][k]
-    print("pair     dist    path")
-    for i, j in product(rn, repeat=2):
-        if i != j:
-            path = [i]
-            while path[-1] != j:
-                path.append(nxt[path[-1]][j])
-            print("%d → %d  %4d       %s" 
-                  % (i + 1, j + 1, dist[i][j], 
-                     ' → '.join(str(p + 1) for p in path)))
+def floydWarshall(self):
+    nodes = list(self.graph.nodes)
+ 
+    for i in nodes:
+        dict_i = {}
+        for j in nodes:
+            if i == j:
+                dict_i[j] = 0
+                continue
+            try:
+                dict_i[j] = self.graph[i][j]['weight']
+            except:
+                dict_i[j] = float("inf")
+ 
+        self.distances[i] = dict_i
+ 
+    for i in nodes:
+        for j in nodes:
+            for k in nodes:
+                ij = self.distances[i][j]
+                ik = self.distances[i][k]
+                kj = self.distances[k][j]
+ 
+                if ij > ik + kj:
+                    self.distances[i][j] = ik + kj
+ 
+    return self.distances
