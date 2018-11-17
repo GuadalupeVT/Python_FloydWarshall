@@ -22,7 +22,7 @@ def floyd_warshall(numVertices, pesos):
         if distancia[i][j] > sum_ik_kj:
             distancia[i][j] = sum_ik_kj
             siguiente[i][j]  = siguiente[i][k]
-    print("pair     distancia    path")
+    print("par     distancia    camino")
     for i, j in product(rn, repetir=2):
         if i != j:
             path = [i]
